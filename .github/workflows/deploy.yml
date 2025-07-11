@@ -35,7 +35,7 @@ jobs:
 
     
       - name: Deploy to EC2 Windows Server via PowerShell Remoting
-        shell: pwsh
+        shell: powershell
         env:
           WIN_HOST: ${{ secrets.WIN_HOST }}
           WIN_USER: ${{ secrets.WIN_USER }}
