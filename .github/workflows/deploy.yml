@@ -32,10 +32,8 @@ jobs:
           name: DevopsCICD-publish
           path: ./publish
 
-
-    
-      - name: Deploy to EC2 Windows Server via PowerShell Remoting
-        shell: powershell
+      - name: Deploy to EC2 Windows Server via PowerShell Remoting
+        shell: pwsh
         env:
           WIN_HOST: ${{ secrets.WIN_HOST }}
           WIN_USER: ${{ secrets.WIN_USER }}
@@ -55,11 +53,14 @@ jobs:
           # Copy the new build
           Copy-Item -Path "$PWD\publish\*" -Destination "C:\HorseDerbyAPI" -ToSession $session -Recurse -Force
 
-          # Restart IIS site
+          # Restart IIS completely
           Invoke-Command -Session $session -ScriptBlock {
-              $modulePath = "$env:windir\\System32\\inetsrv\\WebAdministration.psd1"
-              Import-Module $modulePath -Force              # force‑load the module
-              Restart-WebSite -Name "HorseDerby"
+              iisreset /restart
           }
 
           Remove-PSSession $session
+
+
+
+    
+      
