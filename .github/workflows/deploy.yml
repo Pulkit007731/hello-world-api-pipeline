@@ -57,10 +57,9 @@ jobs:
 
           # Restart IIS site
           Invoke-Command -Session $session -ScriptBlock {
-              Import-Module WebAdministration
-              if (Get-Website -Name "HorseDerby" -ErrorAction SilentlyContinue) {
-                  Restart-WebSite -Name "HorseDerby"
-              }
+              $modulePath = "$env:windir\\System32\\inetsrv\\WebAdministration.psd1"
+              Import-Module $modulePath -Force              # force‑load the module
+              Restart-WebSite -Name "HorseDerby"
           }
 
           Remove-PSSession $session
