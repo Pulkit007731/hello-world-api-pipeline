@@ -6,6 +6,7 @@ namespace Hello_world_devops_testing
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            // Triggering CI/CD deployment
 
             // Add services to the container.
 

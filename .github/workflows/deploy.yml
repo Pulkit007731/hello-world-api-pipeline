@@ -59,8 +59,3 @@ jobs:
           }
 
           Remove-PSSession $session
-
-
-
-    
-      
