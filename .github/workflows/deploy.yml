@@ -33,17 +33,24 @@ jobs:
           name: DevopsCICD-publish
           path: ./publish
 
-      - name: Deploy to EC2 Windows Server via PowerShell Remoting
-        shell: powershell
-        env:
-          WIN_HOST: ${{ secrets.WIN_HOST }}
-          WIN_USER: ${{ secrets.WIN_USER }}
-          WIN_PASSWORD: ${{ secrets.WIN_PASSWORD }}
-        run: |
-          $secPass = ConvertTo-SecureString $env:WIN_PASSWORD -AsPlainText -Force
-          $cred    = New-Object System.Management.Automation.PSCredential ($env:WIN_USER, $secPass)
+      # … everything above (checkout / restore / build / publish / upload) stays the same …
 
-          $session = New-PSSession -ComputerName $env:WIN_HOST -Credential $cred
+      - name: Deploy locally on EC2 runner
+        shell: powershell
+        run: |
+          $dest = "C:\HorseDerbyAPI"
+
+          # Create the folder if it doesn’t exist
+          if (-not (Test-Path $dest)) {
+            New-Item -ItemType Directory -Path $dest | Out-Null
+          }
+
+          # Copy the freshly‑published files
+          Copy-Item -Path "$PWD\publish\*" -Destination $dest -Recurse -Force
+
+          # Restart IIS so the site picks up the new build
+          iisreset /restart
+
 
           # Ensure destination folder exists
           Invoke-Command -Session $session -ScriptBlock {
