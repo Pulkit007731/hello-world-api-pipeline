@@ -52,18 +52,4 @@ jobs:
           iisreset /restart
 
 
-          # Ensure destination folder exists
-          Invoke-Command -Session $session -ScriptBlock {
-              param($dest)
-              if (-not (Test-Path $dest)) { New-Item -ItemType Directory -Path $dest | Out-Null }
-          } -ArgumentList "C:\HorseDerbyAPI"
-
-          # Copy the new build
-          Copy-Item -Path "$PWD\publish\*" -Destination "C:\HorseDerbyAPI" -ToSession $session -Recurse -Force
-
-          # Restart IIS completely
-          Invoke-Command -Session $session -ScriptBlock {
-              iisreset /restart
-          }
-
-          Remove-PSSession $session
+         
