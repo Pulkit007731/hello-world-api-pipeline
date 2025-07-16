@@ -9,7 +9,7 @@ namespace Hello_world_devops_testing.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("Hello World ");
+            return Ok("Hello from the feature branch! ");
         }
     }
 }
