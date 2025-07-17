@@ -17,7 +17,6 @@ jobs:
       #   with:
       #     dotnet-version: 9.0.x
 
-
       - name: Restore dependencies
         run: dotnet restore
 
@@ -33,18 +32,13 @@ jobs:
           name: DevopsCICD-publish
           path: ./publish
 
-      # … everything above (checkout / restore / build / publish / upload) stays the same …
-
       - name: Deploy locally on EC2 runner
         shell: powershell
         run: |
           $dest = "C:\HorseDerbyAPI"
-
-          # Create the folder if it doesn’t exist
           if (-not (Test-Path $dest)) {
             New-Item -ItemType Directory -Path $dest | Out-Null
           }
-
 
       - name: Stop IIS Website (HorseDerby)
         run: |
@@ -55,7 +49,6 @@ jobs:
       - name: Deploy to C:\HorseDerbyAPI
         run: |
           $dest = "C:\HorseDerbyAPI"
-          # Copy the freshly‑published files
           Copy-Item -Path "$PWD\publish\*" -Destination $dest -Recurse -Force
         shell: pwsh
 
@@ -63,12 +56,5 @@ jobs:
         run: |
           Import-Module WebAdministration
           Start-Website -Name "HorseDerby"
-          # Restart IIS so the site picks up the new build
           iisreset /restart
         shell: pwsh
-  
-          # Restart IIS so the site picks up the new build
-          iisreset /restart
-
-
-         
