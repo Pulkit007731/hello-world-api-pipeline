@@ -12,11 +12,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # - name: Setup .NET SDK
-      #   uses: actions/setup-dotnet@v3
-      #   with:
-      #     dotnet-version: 9.0.x
-
       - name: Restore dependencies
         run: dotnet restore
 
@@ -41,20 +36,20 @@ jobs:
           }
 
       - name: Stop IIS Website (HorseDerby)
+        shell: pwsh
         run: |
           Import-Module WebAdministration
           Stop-Website -Name "HorseDerby"
-        shell: pwsh
 
       - name: Deploy to C:\HorseDerbyAPI
+        shell: pwsh
         run: |
           $dest = "C:\HorseDerbyAPI"
           Copy-Item -Path "$PWD\publish\*" -Destination $dest -Recurse -Force
-        shell: pwsh
 
       - name: Start IIS Website (HorseDerby)
+        shell: pwsh
         run: |
           Import-Module WebAdministration
           Start-Website -Name "HorseDerby"
           iisreset /restart
-        shell: pwsh
