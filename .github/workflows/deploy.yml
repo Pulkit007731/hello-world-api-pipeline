@@ -28,7 +28,7 @@ jobs:
           path: ./publish
 
       - name: Create folder if not exists
-        shell: powershell
+        shell: pwsh
         run: |
           $dest = "C:\HorseDerbyAPI"
           if (-not (Test-Path $dest)) {
@@ -53,5 +53,4 @@ jobs:
           Import-Module WebAdministration
           Start-Website -Name "HorseDerby"
           iisreset /restart
-
 
