@@ -36,22 +36,20 @@ jobs:
           }
 
       - name: Stop IIS Website (HorseDerby)
+        shell: powershell
         run: |
           Import-Module WebAdministration
           Stop-Website -Name "HorseDerby"
-        shell: powershell
 
       - name: Deploy to C:\HorseDerbyAPI
+        shell: powershell
         run: |
           $dest = "C:\HorseDerbyAPI"
           Copy-Item -Path "$PWD\publish\*" -Destination $dest -Recurse -Force
-        shell: powershell
 
       - name: Start IIS Website (HorseDerby)
+        shell: powershell
         run: |
           Import-Module WebAdministration
           Start-Website -Name "HorseDerby"
           iisreset /restart
-        shell: powershell
-
-
