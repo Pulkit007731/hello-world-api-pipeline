@@ -55,36 +55,18 @@ jobs:
       - name: Deploy to C:\HorseDerbyAPI
         run: |
           $dest = "C:\HorseDerbyAPI"
-          Copy-Item -Path "$PWD\publish\*" -Destination $dest -Recurse -Force
-        shell: pwsh
-
-      - name: Start IIS Website (HorseDerby)
-        run: |
-          Import-Module WebAdministration
-          Start-Website -Name "HorseDerby"
-        shell: pwsh
-
           # Copy the freshly‑published files
           Copy-Item -Path "$PWD\publish\*" -Destination $dest -Recurse -Force
-         
-
-      - name: Stop IIS Website (HorseDerby)
-        run: |
-          Import-Module WebAdministration
-          Stop-Website -Name "HorseDerby"
-        shell: pwsh
-
-      - name: Deploy to C:\HorseDerbyAPI
-        run: |
-          $dest = "C:\HorseDerbyAPI"
-          Copy-Item -Path "$PWD\publish\*" -Destination $dest -Recurse -Force
         shell: pwsh
 
       - name: Start IIS Website (HorseDerby)
         run: |
           Import-Module WebAdministration
           Start-Website -Name "HorseDerby"
+          # Restart IIS so the site picks up the new build
+          iisreset /restart
         shell: pwsh
+  
           # Restart IIS so the site picks up the new build
           iisreset /restart
 
