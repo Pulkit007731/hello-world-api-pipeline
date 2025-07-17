@@ -53,4 +53,3 @@ jobs:
           Import-Module WebAdministration
           Start-Website -Name "HorseDerby"
           iisreset /restart
-
