@@ -27,7 +27,7 @@ jobs:
           name: DevopsCICD-publish
           path: ./publish
 
-      - name: Deploy locally on EC2 runner
+      - name: Create folder if not exists
         shell: powershell
         run: |
           $dest = "C:\HorseDerbyAPI"
@@ -53,4 +53,5 @@ jobs:
           Import-Module WebAdministration
           Start-Website -Name "HorseDerby"
           iisreset /restart
+
 
