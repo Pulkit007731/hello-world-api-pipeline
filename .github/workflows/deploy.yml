@@ -28,7 +28,7 @@ jobs:
           path: ./publish
 
       - name: Create folder if not exists
-        shell: pwsh
+        shell: powershell
         run: |
           $dest = "C:\HorseDerbyAPI"
           if (-not (Test-Path $dest)) {
@@ -36,21 +36,20 @@ jobs:
           }
 
       - name: Stop IIS Website (HorseDerby)
-        shell: pwsh
+        shell: powershell
         run: |
           Import-Module WebAdministration
           Stop-Website -Name "HorseDerby"
 
       - name: Deploy to C:\HorseDerbyAPI
-        shell: pwsh
+        shell: powershell
         run: |
           $dest = "C:\HorseDerbyAPI"
           Copy-Item -Path "$PWD\publish\*" -Destination $dest -Recurse -Force
 
       - name: Start IIS Website (HorseDerby)
-        shell: pwsh
+        shell: powershell
         run: |
           Import-Module WebAdministration
           Start-Website -Name "HorseDerby"
           iisreset /restart
-
